@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/home/bongya/practice/perl/dancer/mywebapp/lib/mywebapp'
+let g:netrw_dirhist_2='/home/bongya/practice/perl/mnet'
+let g:netrw_dirhist_3='/home/bongya/practice/perl/dancer/emsong/views'
+let g:netrw_dirhist_4='/'
+let g:netrw_dirhist_5='/home/bongya/practice/perl/dancer/piworld/lib'
+let g:netrw_dirhist_6='/home/bongya/.vim/after'
