@@ -1,0 +1,90 @@
+***************
+*** 1446,1452 ****
+  
+  (defconst tuareg-matching-kwop-regexp
+    (concat tuareg-matching-keyword-regexp
+-           "\\|\\<with\\>\\|[|>]?\\]\\|>?}\\|[|)]\\|;;")
+    "Regexp matching Caml keywords or operators which act as end block 
+  
+  (defconst tuareg-matching-kwop-regexp-ls3
+--- 1447,1453 ----
+  
+  (defconst tuareg-matching-kwop-regexp
+    (concat tuareg-matching-keyword-regexp
++           "\\|\\<\\(with\\|finally\\)\\>\\|[|>]?\\]\\|>?}\\|[|)]\\|;;")
+    "Regexp matching Caml keywords or operators which act as end block 
+  
+  (defconst tuareg-matching-kwop-regexp-ls3
+***************
+*** 1644,1678 ****
+    (setq
+     tuareg-find-comma-match-regexp
+      (tuareg-make-find-kwop-regexp
+-      (concat (tuareg-ro "and" "match" "begin" "else" "exception" "then" "try"
+-                         "with" "or" "fun" "function" "let" "do")
+               "\\|->\\|[[{(]"))
+     tuareg-find-with-match-regexp
+      (tuareg-make-find-kwop-regexp
+-      (concat (tuareg-ro "match" "try" "module" "begin" "with" "type")
+               "\\|[[{(]"))
+     tuareg-find-in-match-regexp
+   ;;    (tuareg-make-find-kwop-regexp (tuareg-ro "let" "open"))
+-     (tuareg-make-find-kwop-regexp (tuareg-ro "let"))
+     tuareg-find-else-match-regexp
+      (tuareg-make-find-kwop-regexp ";")
+     tuareg-find-do-match-regexp
+      (tuareg-make-find-kwop-regexp "->")
+     tuareg-find-=-match-regexp
+      (tuareg-make-find-kwop-regexp
+-      (concat (tuareg-ro "val" "let" "method" "module" "type" "class" "when"
+                          "if" "in" "do")
+               "\\|="))
+     tuareg-find-pipe-match-regexp
+      (tuareg-make-find-kwop-regexp (tuareg-give-match-pipe-kwop-regexp))
+     tuareg-find-arrow-match-regexp
+      (tuareg-make-find-kwop-regexp
+-      (concat (tuareg-ro "external" "type" "val" "method" "let" "with" "fun"
+                          "function" "functor" "class" "parser")
+               "\\|[|;]"))
+     tuareg-find-semicolon-match-regexp
+      (tuareg-make-find-kwop-regexp
+       (concat ";" tuareg-no-more-code-this-line-regexp "\\|->\\|"
+-              (tuareg-ro "let" "method" "with" "try" "initializer")))
+     tuareg-find-phrase-indentation-regexp
+      (tuareg-make-find-kwop-regexp
+--- 1653,1687 ----
+    (setq
+     tuareg-find-comma-match-regexp
+      (tuareg-make-find-kwop-regexp
++      (concat (tuareg-ro "and" "match" "match_lwt" "begin" "else" "exception" "then" "try" "try_lwt"
++                         "with" "or" "fun" "function" "let" "lwt" "do" "finally")
+               "\\|->\\|[[{(]"))
+     tuareg-find-with-match-regexp
+      (tuareg-make-find-kwop-regexp
++      (concat (tuareg-ro "match" "match_lwt" "try" "try_lwt" "module" "begin" "with" "type" "finally")
+               "\\|[[{(]"))
+     tuareg-find-in-match-regexp
+   ;;    (tuareg-make-find-kwop-regexp (tuareg-ro "let" "open"))
++     (tuareg-make-find-kwop-regexp (tuareg-ro "let" "lwt"))
+     tuareg-find-else-match-regexp
+      (tuareg-make-find-kwop-regexp ";")
+     tuareg-find-do-match-regexp
+      (tuareg-make-find-kwop-regexp "->")
+     tuareg-find-=-match-regexp
+      (tuareg-make-find-kwop-regexp
++      (concat (tuareg-ro "val" "let" "lwt" "method" "module" "type" "class" "when"
+                          "if" "in" "do")
+               "\\|="))
+     tuareg-find-pipe-match-regexp
+      (tuareg-make-find-kwop-regexp (tuareg-give-match-pipe-kwop-regexp))
+     tuareg-find-arrow-match-regexp
+      (tuareg-make-find-kwop-regexp
++      (concat (tuareg-ro "external" "type" "val" "method" "let" "lwt" "with" "fun"
+                          "function" "functor" "class" "parser")
+               "\\|[|;]"))
+     tuareg-find-semicolon-match-regexp
+      (tuareg-make-find-kwop-regexp
+       (concat ";" tuareg-no-more-code-this-line-regexp "\\|->\\|"
++              (tuareg-ro "let" "lwt" "method" "with" "try" "try_lwt" "initializer" "finally")))
+     tuareg-find-phrase-indentation-regexp
+      (tuareg-make-find-kwop-regexp

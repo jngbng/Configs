@@ -23,7 +23,7 @@ setlocal indentexpr=GetSMLIndent()
 setlocal indentkeys+=0=and,0=else,0=end,0=handle,0=if,0=in,0=let,0=then,0=val,0=fun,0=\|,0=*),0)
 setlocal nolisp
 setlocal nosmartindent
-setlocal textwidth=80
+setlocal textwidth=200
 setlocal shiftwidth=2
 
 " Comment formatting
@@ -130,14 +130,16 @@ function! GetSMLIndent()
 	elseif line =~ '^\s*else\>'
 	  	if lline !~ '^\s*\(if\|else\|then\)\>'
 				return s:FindPair('\<if\>', '', '\<then\>')
-	  	else return ind
+	  	else
+		  return ind
 		endif
 
 	" Match 'then' with 'if'
 	elseif line =~ '^\s*then\>'
   	if lline !~ '^\s*\(if\|else\|then\)\>'
 		  return s:FindPair('\<if\>', '', '\<then\>')
-	else return ind
+	else
+	  return ind
 	endif
 
 	" Indent if current line begins with ']'

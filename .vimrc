@@ -1,10 +1,10 @@
 set nocp
 set hi=256
-set lz									" 메크로 실행중 화면을 다시 그리지 않음
+set lz                      " 메크로 실행중 화면을 다시 그리지 않음
 set nu
 set ts=2
 set sts=2
-set expandtab						"retab
+set expandtab               "retab
 set shiftwidth=2
 set incsearch
 set ai
@@ -12,21 +12,23 @@ set si
 set cindent
 set wildmenu
 set wildmode=longest,full   " First match only to the longest common string, then use full/wildmenu match
-set scrolloff=4							" keep lines between the cursor and bottom/top
-set ss=1										" Nice sidescroll
-set siso=9									" Even nicer sidescroll
-set nosm										" No Smartmatch
+set scrolloff=4             " keep lines between the cursor and bottom/top
+set ss=1                    " Nice sidescroll
+set siso=9                  " Even nicer sidescroll
+set nosm                    " No Smartmatch
 set hlsearch
 set backup
 set nocompatible
-"set backspace=2						"삽입모드에서 백스페이스를 계속 허용
-set showcmd									"부분적 명령을 보여줌
-set pastetoggle=<Ins>				"Ins키로 paste상태와 nopaste상태 전환
-
-set enc=utf-8								" 인코딩 설정 "
+"set backspace=2            "삽입모드에서 백스페이스를 계속 허용
+set showcmd                 "부분적 명령을 보여줌
+set pastetoggle=<Ins>       "Ins키로 paste상태와 nopaste상태 전환
+"set textwidth=80           "visual block으로 설정후 gq
+"set wrap
+set enc=utf-8               " 인코딩 설정 "
 set fenc=utf-8
-set fencs=utf-8,cp949,cp932,euc-jp,shift-jis,big5,ucs-2le,latin1
-set mouse=a
+"set fencs=utf-8,cp949,cp932,euc-jp,shift-jis,big5,ucs-2le,latin1
+set ignorecase              " case insensitive search            
+set colorcolumn=80
 
 syntax on
 filetype on
@@ -35,9 +37,9 @@ filetype plugin on
 
 " 마지막 편집 위치 복원 기능
 au BufReadPost *
-			\ if line("'\"") > 0 && line("'\"") <= line("$") |
-			\   exe "norm g`\"" |
-			\ endif
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \   exe "norm g`\"" |
+      \ endif
 
 " 팁 (tip)
 " 사칙연산하기 | 'ctrl+r', '=', '3+5', '엔터' 8이 입력된다
@@ -46,12 +48,14 @@ au BufReadPost *
 " =======================================================================
 " 확장자별 설정
 " =======================================================================
-au BufNewFile,BufRead *.pl set kp=perldoc\ -f					" perl -> perldoc
-au BufNewFile,BufRead *.pm set kp=perldoc\ -f					" perl -> perldoc
-au BufNewFile,BufRead *.tt set filetype=html					" template for html -> html
-autocmd BufNewFile,BufRead *.p? compiler perl         " perl comiler 
-"au! Syntax tt source $VIM/tt.vim
-au FileType cpp,c setl mp=make\ %:t:r
+" See ~/.vim/ftdetect 
+"au BufNewFile,BufRead *.pl set kp=perldoc\ -f         " perl -> perldoc
+"au BufNewFile,BufRead *.pm set kp=perldoc\ -f         " perl -> perldoc
+"au BufNewFile,BufRead *.tt set filetype=html          " template for html -> html
+"autocmd BufNewFile,BufRead *.p? compiler perl         " perl comiler 
+""au! Syntax tt source $VIM/tt.vim
+"au FileType cpp,c setl mp=make\ %:t:r
+
 
 
 " ======================================================================
@@ -71,12 +75,17 @@ set listchars=tab:\|\
 " NOTE the space char after last backslash.
 
 
+hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+" hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+" nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
+nnoremap <Leader>c :set cursorline!<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plug-in 설정
 """'"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let Tlist_Use_Right_Window=1	"분할 창을 오른쪽에 배치
-let Tlist_Inc_Winwidth = 0		"콘솔창에서 VIM 사용하기
-let Tlist_Auto_Open =0			"vi 실행시 TagList 자동 실행
+let Tlist_Use_Right_Window=1  "분할 창을 오른쪽에 배치
+let Tlist_Inc_Winwidth = 0    "콘솔창에서 VIM 사용하기
+let Tlist_Auto_Open =0      "vi 실행시 TagList 자동 실행
 
 
 " OmniCppComplete plugin settings
@@ -97,6 +106,12 @@ let OmniCpp_SelectFirstItem = 0
 let OmniCpp_LocalSearchDecl = 0
 
 let g:acp_enableAtStartup = 0
+
+let g:Grep_Skip_Dirs=".svn"
+let Grep_Path = '/bin/grep'
+let Grep_OpenQuickfixWindow = 1
+let Grep_Default_Options = '-rn'
+nnoremap <silent> <F9> :Rgrep<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " for numpad
@@ -144,10 +159,10 @@ map <C-F7> :%!xxd -r<CR>
 
 " F8은 ctags 생성 "
 map <F8> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
-map <F12> :!perl %<CR>
+map <F12> :QuickRun<CR>
 
-nmap \sh	:vnew \| ConqueTerm bash<CR>
-nmap \o		:NERDTree<CR>
+nmap \sh  :vnew \| ConqueTerm bash<CR>
+nmap \o   :NERDTree<CR>
 
 " Ctrl+k는 폴딩 접기, Ctrl+j로 폴딩 열기 "
 map <C-k> v]}zf<CR>
@@ -161,7 +176,11 @@ map <C-l> gt
 "map <S-Insert> "+gP
 
 " Ctrl + a  모두 클립보드로 복사
-map <C-a> mzggVG"+y`z
+" map <C-a> mzggVG"+y`z
+
+" emacs like movement
+map <C-a> 0
+map <C-e> $
 
 " Ctrl + 위, 아래 화면 스크롤
 map [1;5A <C-y>
@@ -171,7 +190,8 @@ map [1;5B <C-e>
 nmap == mmggVG=`m
 
 
-
+" DifDiff
+let g:DirDiffDynamicDiffText = 1
 
 " ===========================================================
 " Abbreviations
@@ -179,3 +199,9 @@ nmap == mmggVG=`m
 ia #i #include
 ia #d #define
 
+
+" ===========================================================
+" Command
+" ===========================================================
+":Html -> syntax highlighted html
+com -nargs=0 Html :so $VIMRUNTIME/syntax/2html.vim 
