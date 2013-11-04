@@ -1,4 +1,6 @@
+#!/bin/bash
+
 for file in .[^.]*; 
 do 
-  ln -sh $file ~/$file; 
+  ln -sih $(pwd)/$file ~/$file; 
 done
