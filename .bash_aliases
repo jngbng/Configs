@@ -15,6 +15,8 @@ if [ $(uname) = "Darwin" ];
 then
 #alias emacs='open -a Emacs --args'
   alias ec='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
+else
+  alias ec='emacsclient'
 fi
 
 alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
@@ -46,3 +48,6 @@ alias clj='java -jar ~/.m2/clojure.jar'
 
 
 alias linode='ssh bongya@106.187.44.158'
+
+
+alias rehide='killall plasma-desktop && plasma-desktop > /dev/null 2>&1'
