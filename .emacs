@@ -24,8 +24,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Node-js mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path "~/.emacs.d/site-lisp/nodejs-mode/")
-(require 'nodejs-mode)
+;(add-to-list 'load-path "~/.emacs.d/site-lisp/nodejs-mode/")
+;(require 'nodejs-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -46,41 +46,41 @@
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/slime/")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/slime/contrib")
-(require 'slime)
-(slime-setup)
-
-
-
-(require 'slime-js)
-(add-hook 'js2-mode-hook
-  (lambda ()
-    (slime-js-minor-mode 1)))
-
-(add-hook 'css-mode-hook
-  (lambda ()
-    (define-key css-mode-map "\M-\C-x" 'slime-js-refresh-css)
-    (define-key css-mode-map "\C-c\C-r" 'slime-js-embed-css)))
-
-;(eval-after-load 'auto-complete
+;(require 'slime)
+;(slime-setup)
+;
+;
+;
+;(require 'slime-js)
+;(add-hook 'js2-mode-hook
+;  (lambda ()
+;    (slime-js-minor-mode 1)))
+;
+;(add-hook 'css-mode-hook
+;  (lambda ()
+;    (define-key css-mode-map "\M-\C-x" 'slime-js-refresh-css)
+;    (define-key css-mode-map "\C-c\C-r" 'slime-js-embed-css)))
+;
+;;(eval-after-load 'auto-complete
+;;  '(progn
+;;     (add-to-list 'ac-modes 'slime-repl-mode)
+;;     (add-to-list 'ac-modes 'js2-mode)
+;;     (add-to-list 'ac-modes 'js-mode)
+;;     (add-hook 'slime-mode-hook 'set-up-slime-ac)
+;;     (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)))
+;
+;(eval-after-load 'slime
 ;  '(progn
-;     (add-to-list 'ac-modes 'slime-repl-mode)
-;     (add-to-list 'ac-modes 'js2-mode)
-;     (add-to-list 'ac-modes 'js-mode)
-;     (add-hook 'slime-mode-hook 'set-up-slime-ac)
-;     (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)))
-
-(eval-after-load 'slime
-  '(progn
-;    (require 'slime-fuzzy)
-;    (require 'auto-complete)
-;    (require 'ac-slime)
-;    (slime-fuzzy-init)
-    (setq slime-protocol-version 'ignore
-;          slime-net-coding-system 'utf-8-unix
-;          slime-complete-symbol*-fancy t
-;          slime-complete-symbol-function 'slime-fuzzy-complete-symbol
-          )
-    (slime-setup '(slime-repl slime-js slime-asdf))))
+;;    (require 'slime-fuzzy)
+;;    (require 'auto-complete)
+;;    (require 'ac-slime)
+;;    (slime-fuzzy-init)
+;    (setq slime-protocol-version 'ignore
+;;          slime-net-coding-system 'utf-8-unix
+;;          slime-complete-symbol*-fancy t
+;;          slime-complete-symbol-function 'slime-fuzzy-complete-symbol
+;          )
+;    (slime-setup '(slime-repl slime-js slime-asdf))))
 
 ;;========================================
 ;; start the emacsserver that listens to emacsclient
@@ -242,7 +242,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ocp-indent
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-file "/Users/bongya/.opam/4.00.1/share/typerex/ocp-indent/ocp-indent.el")
+(load-file "~/.opam/4.00.1/share/typerex/ocp-indent/ocp-indent.el")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell pop
@@ -434,7 +434,6 @@
  '(sr-speedbar-right-side nil)
  '(tool-bar-mode nil))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell toggle
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -476,7 +475,34 @@
 ;;  '(default ((t (:inherit nil :stipple nil  :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "xos4" :family "Terminus")))))
 
 
-(add-to-list 'default-frame-alist '(font . "Terminus"))
+(add-to-list 'default-frame-alist '(font . "Monospace"))
+(if (eq system-type 'gnu/linux)
+ (progn
+  (set-fontset-font 
+    "fontset-default" 
+    'korean-ksc5601 
+    '("Naver Dictionary" . "unicode-bmp")
+   )
+;;;; 유니코드 한글영역
+;(set-fontset-font
+;        "fontset-default"
+;        '(#x1100 . #xffdc)
+;        '("Naver Dictionary" . "unicode-bmp"))
+;;;;유니코드 사용자 영역
+;(set-fontset-font
+;        "fontset-default"
+;        '(#xe0bc . #xf66e)
+;        '("Naver Dictionary" . "unicode-bmp"))
+;(set-fontset-font
+;        "fontset-default"
+;        'kana
+;        '("Dejavu Sans" . "unicode-bmp"))
+;(set-fontset-font
+;        "fontset-default"
+;        'han
+;        '("Dejavu Sans" . "unicode-bmp"))
+))
+
 
 ; set nu -> linum-mode
 ; (load-library "setnu.el")
@@ -574,10 +600,96 @@
 (setq-default buffer-coding-system 'utf-8) 
 (prefer-coding-system 'utf-8) 
 (set-default-coding-systems 'utf-8) 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 (with-temp-buffer (insert (shell-command-to-string "ocp-edit-mode emacs -load-global-config")) (eval-buffer))
+
+
+(require 'smart-compile)
+
+(require 'cl)  ; for lexical-let
+
+(defun do-execute (exe)
+  ;; (with-current-buffer "*eshell*"
+  ;;   (goto-char (point-max))
+  ;;   (insert exe)
+  ;;   (eshell-send-input))
+  ;; (switch-to-buffer-other-window "*eshell*")
+  ;; (with-selected-window (get-buffer-window "*eshell*" t)
+  ;;   (goto-char (point-max)))
+  (with-selected-window (next-window)
+    (pop-to-buffer "*eshell*")
+    (goto-char (point-max))
+    (insert exe)
+    (eshell-send-input))
+  )
+
+(defun save-compile-execute ()
+  (interactive)
+  (lexical-let ((exe (smart-compile-string "./%n"))
+                finish-callback)
+    ;; when compilation is done, execute the program
+    ;; and remove the callback from
+    ;; compilation-finish-functions
+    (setq finish-callback
+          (lambda (buf msg)
+            (do-execute exe)
+            (setq compilation-finish-functions
+                  (delq finish-callback compilation-finish-functions))))
+    (push finish-callback compilation-finish-functions))
+  (smart-compile 1))
+
+
+
+(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+
+(define-key my-keys-minor-mode-map (kbd "C-c C-c") 'smart-compile)
+(define-key my-keys-minor-mode-map (kbd "C-c C-r") 'save-compile-execute)
+
+(define-minor-mode my-keys-minor-mode
+  "A minor mode so that my key settings override annoying major modes."
+  t " my-keys" 'my-keys-minor-mode-map)
+
+(my-keys-minor-mode 1)
+
+(defun my-minibuffer-setup-hook ()
+  (my-keys-minor-mode 0))
+
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Confluence
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-to-list 'load-path "~/.emacs.d/site-lisp/confluence-1.6/")
+
+;; assuming confluence.el and xml-rpc.el are in your load path
+(require 'confluence)
+
+;; note, all customization must be in *one* custom-set-variables block
+
+(custom-set-variables
+ '(confluence-url "http://slp-info.sec.samsung.net/confluence/rpc/xmlrpc")
+ '(confluence-default-space-alist (list (cons confluence-url "BROWSER")))
+ '(confluence-save-credentials t)
+ '(confluence-xml-convert-to-wiki-on-load t)
+ )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; confluence editing support (with longlines mode)
+
+(autoload 'confluence-get-page "confluence" nil t)
+
+(eval-after-load "confluence"
+  '(progn
+       (add-hook 'confluence-mode-hook '(lambda () (local-set-key "\C-j" 'confluence-newline-and-indent)))))
+
+;; keybindings (change to suit)
+
+;; open confluence page
+(global-set-key "\C-xwf" 'confluence-get-page)
+
+;; setup confluence mode
+(add-hook 'confluence-mode-hook
+          '(lambda ()
+             (local-set-key "\C-xw" confluence-prefix-map)))
