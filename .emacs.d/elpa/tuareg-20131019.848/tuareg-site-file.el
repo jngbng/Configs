@@ -1,14 +1,11 @@
-;;; tuareg-autoloads.el --- automatically extracted autoloads
-;;
+;;; tuareg-site-file.el --- Automatically extracted autoloads.
 ;;; Code:
-
+(add-to-list 'load-path
+             (or (file-name-directory load-file-name) (car load-path)))
 
-;;;### (autoloads (ocamldebug) "ocamldebug" "ocamldebug.el" (20867
-;;;;;;  55124))
+;;;### (autoloads (ocamldebug) "ocamldebug" "ocamldebug.el" (20189
+;;;;;;  10027))
 ;;; Generated autoloads from ocamldebug.el
-
-(defvar ocamldebug-command-name "ocamldebug" "\
-Pathname for executing the OCaml debugger.")
 
 (autoload 'ocamldebug "ocamldebug" "\
 Run ocamldebug on program FILE in buffer *ocamldebug-FILE*.
@@ -23,9 +20,11 @@ the ocamldebug commands `cd DIR' and `directory'.
 ;;;***
 
 ;;;### (autoloads (tuareg-run-ocaml tuareg-mode) "tuareg" "tuareg.el"
-;;;;;;  (20867 55124))
+;;;;;;  (20520 64819))
 ;;; Generated autoloads from tuareg.el
- (add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
+(add-to-list 'auto-mode-alist '("\\.ml[iylp]?\\'" . tuareg-mode))
+(dolist (ext '(".cmo" ".cmx" ".cma" ".cmxa" ".cmi" ".annot"))
+ (add-to-list 'completion-ignored-extensions ext))
 
 (autoload 'tuareg-mode "tuareg" "\
 Major mode for editing OCaml code.
@@ -80,7 +79,7 @@ For the best indentation experience, some elementary rules must be followed.
     code; to enforce this, leave a blank line before the comment.
 
 Known bugs:
-  - When writting a line with mixed code and comments, avoid putting
+  - When writing a line with mixed code and comments, avoid putting
     comments at the beginning or middle of the text. More precisely,
     writing comments immediately after `=' or parentheses then writing
     some more code on the line leads to indentation errors. You may write
@@ -99,19 +98,9 @@ Run an OCaml toplevel process. I/O via buffer `*ocaml-toplevel*'.
 
 \(fn)" t nil)
 
-(defalias 'tuareg-run-caml 'tuareg-run-ocaml)
+;;;***
+
+;;;### (autoloads nil nil ("tuareg-light.el") (20520 64850 871430))
 
 ;;;***
 
-;;;### (autoloads nil nil ("tuareg-pkg.el") (20867 55124 836432))
-
-;;;***
-
-(provide 'tuareg-autoloads)
-;; Local Variables:
-;; version-control: never
-;; no-byte-compile: t
-;; no-update-autoloads: t
-;; coding: utf-8
-;; End:
-;;; tuareg-autoloads.el ends here

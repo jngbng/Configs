@@ -3,16 +3,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (when (>= emacs-major-version 24)
   (require 'package)
-  (package-initialize) 
-  (add-to-list 'package-archives '("elpa" . "http://elpa.gnu.org/"))
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/"))
+
+  (defadvice package-compute-transaction
+     (before package-compute-transaction-reverse (package-list requirements) activate compile)
+       "reverse the requirements"
+       (setq requirements (reverse requirements))
+       (print requirements))
+
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (package-initialize) 
   )
 
 ;; (normal-top-level-add-subdirs-to-load-path)
 
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 (add-to-list 'load-path "~/.emacs.d/themes/")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Node-js mode
@@ -177,47 +184,45 @@
 ;; Tuareg mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 
-(setq tuareg-use-smie t)
+;(setq tuareg-use-smie t)
 
 ;;; Tuareg quick installation: Append this file to .emacs.
-(add-to-list 'load-path "~/.emacs.d/site-lisp/tuareg-2.0.4/")
+;(add-to-list 'load-path "~/.emacs.d/site-lisp/tuareg-2.0.4/")
 
 (add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
 (add-to-list 'auto-mode-alist '("\\.eliom" . tuareg-mode))
 (autoload 'tuareg-mode "tuareg" "Major mode for editing OCaml code" t)
 (autoload 'tuareg-run-ocaml "tuareg" "Run an inferior OCaml process." t)
 (autoload 'ocamldebug "ocamldebug" "Run the OCaml debugger" t)
-(dolist (ext '(".cmo" ".cmx" ".cma" ".cmxa" ".cmi"))
+(dolist (ext '(".cmo" ".cmx" ".cma" ".cmxa" ".cmi" ".annot"))
   (add-to-list 'completion-ignored-extensions ext))
 
 ;;; Sample customization
 
 ;; Indent `=' like a standard keyword.
-(setq tuareg-lazy-= t)
+;(setq tuareg-lazy-= t)
 ;; Indent [({ like standard keywords.
-(setq tuareg-lazy-paren t)
+;(setq tuareg-lazy-paren t)
 ;; No indentation after `in' keywords.
-(setq tuareg-in-indent 0)
+;(setq tuareg-in-indent 0)
 
-(add-hook 'tuareg-mode-hook
-  (lambda ()
-    ;; turn on auto-fill minor mode
-    (auto-fill-mode 1)))
+;(add-hook 'tuareg-mode-hook
+;  (lambda ()
+;    ;; turn on auto-fill minor mode
+;    (auto-fill-mode 1)))
 
-
-
-(setq tuareg-default-indent 2
-      tuareg-sig-struct-indent 2
-      tuareg-function-indent 0
-      tuareg-in-indent 0
-      tuareg-let-always-indent 0
-      tuareg-match-indent 0
-      tuareg-pipe-extra-unindent 0
-      tuareg-type-indent 0
-      tuareg-let-indent 2
-      tuareg-val-indent 2
-      tuareg-with-indent 0
-      tuareg-if-then-else-indent 2)
+;; (setq tuareg-default-indent 2
+;;       tuareg-sig-struct-indent 2
+;;       tuareg-function-indent 0
+;;       tuareg-in-indent 0
+;;       tuareg-let-always-indent 0
+;;       tuareg-match-indent 0
+;;       tuareg-pipe-extra-unindent 0
+;;       tuareg-type-indent 0
+;;       tuareg-let-indent 2
+;;       tuareg-val-indent 2
+;;       tuareg-with-indent 0
+;;       tuareg-if-then-else-indent 2)
 
 ;;(autoload 'utop "utop" "Toplevel for OCaml" t)
 ;(autoload 'utop-eval-region "utop" "Toplevel for OCaml" t)
@@ -421,6 +426,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(inhibit-startup-screen t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(speedbar-show-unknown-files t)
@@ -455,7 +461,7 @@
 ;(load-file "~/.emacs.d/themes/color-theme-tangotango.el")
 ;(color-theme-tangotango)
 
-(require 'highline)
+;(require 'highline)
 (global-hl-line-mode 1)
 ;(highline-mode 1)
    
@@ -568,3 +574,10 @@
 (setq-default buffer-coding-system 'utf-8) 
 (prefer-coding-system 'utf-8) 
 (set-default-coding-systems 'utf-8) 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+(with-temp-buffer (insert (shell-command-to-string "ocp-edit-mode emacs -load-global-config")) (eval-buffer))
