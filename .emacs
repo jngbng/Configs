@@ -175,10 +175,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C++ mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq c++-mode-hook 'my-key) 
-(defun my-key () 
-   "My binding for c++-mode." 
-     (define-key c++-mode-map (kbd "C-c C-c") 'compile)) 
+;; (setq c++-mode-hook 'my-key) 
+;; (defun my-key () 
+;;    "My binding for c++-mode." 
+;;      (define-key c++-mode-map (kbd "C-c C-c") 'compile)) 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; Tuareg mode
@@ -475,7 +475,6 @@
 ;;  '(default ((t (:inherit nil :stipple nil  :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "xos4" :family "Terminus")))))
 
 
-(add-to-list 'default-frame-alist '(font . "Monospace"))
 (if (eq system-type 'gnu/linux)
  (progn
   (set-fontset-font 
@@ -483,6 +482,7 @@
     'korean-ksc5601 
     '("Naver Dictionary" . "unicode-bmp")
    )
+  (add-to-list 'default-frame-alist '(font . "Monospace"))
 ;;;; 유니코드 한글영역
 ;(set-fontset-font
 ;        "fontset-default"
@@ -693,3 +693,21 @@
 (add-hook 'confluence-mode-hook
           '(lambda ()
              (local-set-key "\C-xw" confluence-prefix-map)))
+
+
+;; (setq c++-mode-hook 'my-key) 
+(defun set_ret_newline_indent () 
+   "My binding for c++-mode." 
+     (local-set-key (kbd "RET") 'newline-and-indent)) 
+
+(eval-after-load "cc-mode"
+  '(progn
+     (add-hook 'c++-mode-hook 'set_ret_newline_indent)))
+
+;; (add-hook 'tuareg-mode-hook
+;;           '(lambda ()
+;;              (local-set-key "RET" 'newline-and-indent)))
+
+;; (add-hook 'tuareg-mode-hook
+;;           '(lambda ()
+;;              (local-set-key "RET" 'newline-and-indent)))
