@@ -3,7 +3,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (when (>= emacs-major-version 24)
   (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages") t)
+
+  (defadvice package-compute-transaction
+     (before package-compute-transaction-reverse (package-list requirements) activate compile)
+       "reverse the requirements"
+       (setq requirements (reverse requirements))
+       (print requirements))
+
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (package-initialize) 
   )
@@ -12,6 +19,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 (add-to-list 'load-path "~/.emacs.d/themes/")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Node-js mode
@@ -167,56 +175,54 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C++ mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq c++-mode-hook 'my-key) 
-(defun my-key () 
-   "My binding for c++-mode." 
-     (define-key c++-mode-map (kbd "C-c C-c") 'compile)) 
+;; (setq c++-mode-hook 'my-key) 
+;; (defun my-key () 
+;;    "My binding for c++-mode." 
+;;      (define-key c++-mode-map (kbd "C-c C-c") 'compile)) 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; Tuareg mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 
-(setq tuareg-use-smie t)
+;(setq tuareg-use-smie t)
 
 ;;; Tuareg quick installation: Append this file to .emacs.
-(add-to-list 'load-path "~/.emacs.d/site-lisp/tuareg-2.0.4/")
+;(add-to-list 'load-path "~/.emacs.d/site-lisp/tuareg-2.0.4/")
 
 (add-to-list 'auto-mode-alist '("\\.ml[iylp]?" . tuareg-mode))
 (add-to-list 'auto-mode-alist '("\\.eliom" . tuareg-mode))
 (autoload 'tuareg-mode "tuareg" "Major mode for editing OCaml code" t)
 (autoload 'tuareg-run-ocaml "tuareg" "Run an inferior OCaml process." t)
 (autoload 'ocamldebug "ocamldebug" "Run the OCaml debugger" t)
-(dolist (ext '(".cmo" ".cmx" ".cma" ".cmxa" ".cmi"))
+(dolist (ext '(".cmo" ".cmx" ".cma" ".cmxa" ".cmi" ".annot"))
   (add-to-list 'completion-ignored-extensions ext))
 
 ;;; Sample customization
 
 ;; Indent `=' like a standard keyword.
-(setq tuareg-lazy-= t)
+;(setq tuareg-lazy-= t)
 ;; Indent [({ like standard keywords.
-(setq tuareg-lazy-paren t)
+;(setq tuareg-lazy-paren t)
 ;; No indentation after `in' keywords.
-(setq tuareg-in-indent 0)
+;(setq tuareg-in-indent 0)
 
-(add-hook 'tuareg-mode-hook
-  (lambda ()
-    ;; turn on auto-fill minor mode
-    (auto-fill-mode 1)))
+;(add-hook 'tuareg-mode-hook
+;  (lambda ()
+;    ;; turn on auto-fill minor mode
+;    (auto-fill-mode 1)))
 
-
-
-(setq tuareg-default-indent 2
-      tuareg-sig-struct-indent 2
-      tuareg-function-indent 0
-      tuareg-in-indent 0
-      tuareg-let-always-indent 0
-      tuareg-match-indent 0
-      tuareg-pipe-extra-unindent 0
-      tuareg-type-indent 0
-      tuareg-let-indent 2
-      tuareg-val-indent 2
-      tuareg-with-indent 0
-      tuareg-if-then-else-indent 2)
+;; (setq tuareg-default-indent 2
+;;       tuareg-sig-struct-indent 2
+;;       tuareg-function-indent 0
+;;       tuareg-in-indent 0
+;;       tuareg-let-always-indent 0
+;;       tuareg-match-indent 0
+;;       tuareg-pipe-extra-unindent 0
+;;       tuareg-type-indent 0
+;;       tuareg-let-indent 2
+;;       tuareg-val-indent 2
+;;       tuareg-with-indent 0
+;;       tuareg-if-then-else-indent 2)
 
 ;;(autoload 'utop "utop" "Toplevel for OCaml" t)
 ;(autoload 'utop-eval-region "utop" "Toplevel for OCaml" t)
@@ -454,9 +460,7 @@
 ;(load-file "~/.emacs.d/themes/color-theme-tangotango.el")
 ;(color-theme-tangotango)
 
-(require 'highline)
-(global-highline-mode 1)
-;(highline-mode 1)
+(global-hl-line-mode 1)
    
 ;; To customize the background color
 (set-face-background 'highline-face "#444")
@@ -471,7 +475,8 @@
 
 ;; http://seorenn.blogspot.kr/2011/04/emacs_24.html
 ;; http://wiki.kldp.org/wiki.php/EmacsChangeFonts
-(add-to-list 'default-frame-alist '(font . "Monospace"))
+;; (add-to-list 'default-frame-alist '(font . "Monospace"))
+
 (if (eq system-type 'gnu/linux)
  (progn
   (set-fontset-font 
@@ -479,6 +484,7 @@
     'korean-ksc5601 
     '("Naver Dictionary" . "unicode-bmp")
    )
+  (add-to-list 'default-frame-alist '(font . "Monospace"))
 ;;;; 유니코드 한글영역
 ;(set-fontset-font
 ;        "fontset-default"
@@ -597,7 +603,7 @@
 (setq-default buffer-coding-system 'utf-8) 
 (prefer-coding-system 'utf-8) 
 (set-default-coding-systems 'utf-8) 
-
+(with-temp-buffer (insert (shell-command-to-string "ocp-edit-mode emacs -load-global-config")) (eval-buffer))
 
 
 (require 'smart-compile)
@@ -734,3 +740,16 @@
           (insert exe)
           (comint-send-input)
           (select-window (get-buffer-window working-buffer)))))))
+
+;; (setq c++-mode-hook 'my-key) 
+(defun set_ret_newline_indent () 
+   "My binding for c++-mode." 
+     (local-set-key (kbd "RET") 'newline-and-indent)) 
+
+(eval-after-load "cc-mode"
+  '(progn
+     (add-hook 'c++-mode-hook 'set_ret_newline_indent)))
+
+;; (add-hook 'tuareg-mode-hook
+;;           '(lambda ()
+;;              (local-set-key "RET" 'newline-and-indent)))

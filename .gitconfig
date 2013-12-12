@@ -2,10 +2,12 @@
 	tool = vimdiff
 [difftool]
 	prompt = false
-[alias]
-	d = difftool
 [user]
 	name = Jeongbong Seo
 	email = jngbng@gmail.com
 [push]
 	default = matching
+[merge]
+	tool = vimdiff
+[mergetool]
+	prompt = false
