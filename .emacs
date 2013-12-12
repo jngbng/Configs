@@ -455,11 +455,11 @@
 ;(color-theme-tangotango)
 
 (require 'highline)
-(global-hl-line-mode 1)
+(global-highline-mode 1)
 ;(highline-mode 1)
    
 ;; To customize the background color
-(set-face-background 'highline-face "#222")
+(set-face-background 'highline-face "#444")
 
 ;; (custom-set-faces
 ;;  ;; custom-set-faces was added by Custom.
@@ -469,6 +469,8 @@
 ;;  '(default ((t (:inherit nil :stipple nil  :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "xos4" :family "Terminus")))))
 
 
+;; http://seorenn.blogspot.kr/2011/04/emacs_24.html
+;; http://wiki.kldp.org/wiki.php/EmacsChangeFonts
 (add-to-list 'default-frame-alist '(font . "Monospace"))
 (if (eq system-type 'gnu/linux)
  (progn
@@ -495,8 +497,9 @@
 ;        "fontset-default"
 ;        'han
 ;        '("Dejavu Sans" . "unicode-bmp"))
-))
+) (message (symbol-name system-type)))
 
+;; (setq face-font-rescale-alist '((".*Naver.*" . 1.0)))
 
 ; set nu -> linum-mode
 ; (load-library "setnu.el")
@@ -687,3 +690,47 @@
 (add-hook 'confluence-mode-hook
           '(lambda ()
              (local-set-key "\C-xw" confluence-prefix-map)))
+
+
+(add-hook 'python-mode-hook
+     '(lambda () 
+         (local-set-key (kbd "C-c C-e") 'my-python-next-statement)))
+
+(defun chomp (str)
+  "Chomp leading and tailing whitespace from STR."
+  (while (string-match "\\`\n+\\|^\\s-+\\|\\s-+$\\|\n+\\'"
+                       str)
+    (setq str (replace-match "" t t str)))
+  str)
+
+;; https://groups.google.com/forum/#!topic/gnu.emacs.help/3s98uTafg6E
+(defun my-python-next-statement (&optional _beg _end)
+  (interactive)
+  (let ((beg (cond (_beg beg)
+                    ((region-active-p) (region-beginning))
+                    (t  ;; (point-at-bol)
+                        (line-beginning-position)
+                        )))
+        (end (cond (_end end)
+                   ((region-active-p) (copy-marker (region-end)))
+                   (t ;; (point-at-eol);; 
+                      (line-end-position)
+                      )))
+        (working-buffer (current-buffer))
+        (pythonWin (get-buffer-window "*Python*" t)))
+    (let ((exe (if (or _beg _end (region-active-p))
+                   (buffer-substring beg end)
+                 (chomp (buffer-substring beg end)))))
+    (if pythonWin
+        ;; when python shell is visible
+        (with-selected-window pythonWin
+          (goto-char (point-max))
+          (insert exe)
+          (comint-send-input))
+        ;; if not
+        (progn
+          (run-python)
+          (goto-char (point-max))
+          (insert exe)
+          (comint-send-input)
+          (select-window (get-buffer-window working-buffer)))))))

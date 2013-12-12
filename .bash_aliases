@@ -11,13 +11,14 @@ alias of='ocamlfind ocamlbrowser -package '
 alias ob='ocamlfind ocamlbrowser -all '
 alias diffdir="vim -f '+next' '+execute \"DirDiff\" argv(0) argv(1)' "
 
-if [ $(uname) = "Darwin" ];
-then
+## ~/bin/ec
+#if [ $(uname) = "Darwin" ];
+#then
 #alias emacs='open -a Emacs --args'
-  alias ec='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
-else
-  alias ec='emacsclient'
-fi
+#  alias ec='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
+#else
+#  alias ec=call_ec
+#fi
 
 alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 

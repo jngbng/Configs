@@ -1,5 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/Users/bongya/.vim'
-let g:netrw_dirhist_2='/home/bongya/.git'
-let g:netrw_dirhist_3='/home/bongya/configs/.emacs.d/site-lisp'
