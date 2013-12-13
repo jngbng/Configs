@@ -753,3 +753,5 @@
 ;; (add-hook 'tuareg-mode-hook
 ;;           '(lambda ()
 ;;              (local-set-key "RET" 'newline-and-indent)))
+
+(add-hook 'python-mode-hook 'set_ret_newline_indent)
