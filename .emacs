@@ -475,35 +475,56 @@
 
 ;; http://seorenn.blogspot.kr/2011/04/emacs_24.html
 ;; http://wiki.kldp.org/wiki.php/EmacsChangeFonts
-;; (add-to-list 'default-frame-alist '(font . "Monospace"))
+;; http://stackoverflow.com/questions/17102692/using-a-list-of-fonts-with-a-daemonized-emacs
+;; https://github.com/rolandwalker/unicode-fonts/issues/3
+;; (if (daemonp) ...)
 
+(setq my-fonts '((unicode "-xos4-Terminus-normal-normal-normal-*-16-*-*-*-c-80-iso10646-1")))
 (if (eq system-type 'gnu/linux)
- (progn
-  (set-fontset-font 
-    "fontset-default" 
-    'korean-ksc5601 
-    '("Naver Dictionary" . "unicode-bmp")
-   )
-  (add-to-list 'default-frame-alist '(font . "Monospace"))
-;;;; 유니코드 한글영역
-;(set-fontset-font
-;        "fontset-default"
-;        '(#x1100 . #xffdc)
-;        '("Naver Dictionary" . "unicode-bmp"))
-;;;;유니코드 사용자 영역
-;(set-fontset-font
-;        "fontset-default"
-;        '(#xe0bc . #xf66e)
-;        '("Naver Dictionary" . "unicode-bmp"))
-;(set-fontset-font
-;        "fontset-default"
-;        'kana
-;        '("Dejavu Sans" . "unicode-bmp"))
-;(set-fontset-font
-;        "fontset-default"
-;        'han
-;        '("Dejavu Sans" . "unicode-bmp"))
-) (message (symbol-name system-type)))
+    ;; (add-to-list 'my-fonts '(korean-ksc5601 "-microsoft-Naver Dictionary-normal-normal-normal-*-16-*-*-*-*-0-iso10646-1"))
+    (add-to-list 'my-fonts '(korean-ksc5601 ("Naver Dictionary" . "unicode-bmp")))
+  )
+
+(defun my/init-fonts (&optional f)
+  (when (display-graphic-p f)
+    ;; (create-fontset-from-fontset-spec standard-fontset-spec) ;to make --daemon work
+    (add-to-list 'default-frame-alist '(font . "fontset-standard"))
+    (dolist (font my-fonts)
+      (set-fontset-font "fontset-standard" (car font) (car (cdr font)) nil 'prepend))
+    (remove-hook 'after-make-frame-functions 'my/init-fonts)))
+
+(add-hook 'after-init-hook
+ (lambda ()
+   (if initial-window-system
+     (my/init-fonts)
+     (add-hook 'after-make-frame-functions 'my/init-fonts))))
+
+;; (if (eq system-type 'gnu/linux)
+;;  (progn
+;;   (set-fontset-font 
+;;     "fontset-default" 
+;;     'korean-ksc5601 
+;;     '("Naver Dictionary" . "unicode-bmp")
+;;    )
+;; ;;;; 유니코드 한글영역
+;; ;(set-fontset-font
+;; ;        "fontset-default"
+;; ;        '(#x1100 . #xffdc)
+;; ;        '("Naver Dictionary" . "unicode-bmp"))
+;; ;;;;유니코드 사용자 영역
+;; ;(set-fontset-font
+;; ;        "fontset-default"
+;; ;        '(#xe0bc . #xf66e)
+;; ;        '("Naver Dictionary" . "unicode-bmp"))
+;; ;(set-fontset-font
+;; ;        "fontset-default"
+;; ;        'kana
+;; ;        '("Dejavu Sans" . "unicode-bmp"))
+;; ;(set-fontset-font
+;; ;        "fontset-default"
+;; ;        'han
+;; ;        '("Dejavu Sans" . "unicode-bmp"))
+;; ))
 
 ;; (setq face-font-rescale-alist '((".*Naver.*" . 1.0)))
 
@@ -697,15 +718,9 @@
           '(lambda ()
              (local-set-key "\C-xw" confluence-prefix-map)))
 
-
-(add-hook 'python-mode-hook
-     '(lambda () 
-         (local-set-key (kbd "C-c C-e") 'my-python-next-statement)))
-
 (defun chomp (str)
   "Chomp leading and tailing whitespace from STR."
-  (while (string-match "\\`\n+\\|^\\s-+\\|\\s-+$\\|\n+\\'"
-                       str)
+  (while (string-match "\\`\n+\\|^\\s-+\\|\\s-+$\\|\n+\\'" str)
     (setq str (replace-match "" t t str)))
   str)
 
@@ -725,8 +740,9 @@
         (working-buffer (current-buffer))
         (pythonWin (get-buffer-window "*Python*" t)))
     (let ((exe (if (or _beg _end (region-active-p))
-                   (buffer-substring beg end)
-                 (chomp (buffer-substring beg end)))))
+                   ;TODO: http://www.masteringemacs.org/articles/2011/03/16/removing-blank-lines-buffer/
+                   (buffer-substring beg end) 
+                   (chomp (buffer-substring beg end)))))
     (if pythonWin
         ;; when python shell is visible
         (with-selected-window pythonWin
@@ -754,4 +770,12 @@
 ;;           '(lambda ()
 ;;              (local-set-key "RET" 'newline-and-indent)))
 
-(add-hook 'python-mode-hook 'set_ret_newline_indent)
+(add-hook 'python-mode-hook
+     '(lambda () 
+         (local-set-key (kbd "C-c C-e") 'my-python-next-statement)
+         (set_ret_newline_indent)
+         (setq indent-tabs-mode nil)
+         (setq tab-width 2)
+         (setq python-indent 2)))
+
+(setq tab-width 4)

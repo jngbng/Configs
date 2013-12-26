@@ -52,3 +52,6 @@ alias linode='ssh bongya@106.187.44.158'
 
 
 alias rehide='killall plasma-desktop && plasma-desktop > /dev/null 2>&1'
+
+alias gbuild='gbs build -A armv7l --incremental --include-all --define="nodebug 1"'
+alias cbuild='gbs build -C -A armv7l --include-all --define="nodebug 1"'
