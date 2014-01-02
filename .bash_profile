@@ -22,12 +22,15 @@ branch_color ()
 {
   if ! [ -z $(__git_ps1) ]; then
     # 현재 branch의 상태에 따라 branch 명의 색상을 변경
-    color=""
-    if git diff --quiet 2>/dev/null >&2
-    then
-      color="${c_green}"
+    changelist=$(git status -s | grep -oE "^..")
+    stagedchanges=$(echo "$changelist" | grep -oE "^[^ ].")
+    unstagedchanges=$(echo "$changelist" | grep -oE "^.[^ ]")
+    if ! [ -z "$unstagedchanges" ]; then
+      color="${c_red}"
+    elif ! [ -z "$stagedchanges" ]; then
+      color="${c_cyan}"
     else
-      color=${c_red}
+      color="${c_green}"
     fi
   else
     return 0

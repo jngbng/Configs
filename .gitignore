@@ -5,3 +5,4 @@
 .emacs.d/elpa
 *~
 .emacs.d/eshell/
+.emacs.d/ac-comphist.dat

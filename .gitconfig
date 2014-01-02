@@ -21,6 +21,7 @@
 [mergetool]
 	prompt = false
 [color]
+  ui = true
 	diff = auto
 	branch = auto
 	status = auto
