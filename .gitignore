@@ -1,0 +1,7 @@
+.vim/.netrwhist
+.emacs.d/url
+.emacs.d/var
+.emacs.d/session*
+.emacs.d/elpa
+*~
+.emacs.d/eshell/

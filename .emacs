@@ -771,11 +771,13 @@
 ;;              (local-set-key "RET" 'newline-and-indent)))
 
 (add-hook 'python-mode-hook
-     '(lambda () 
-         (local-set-key (kbd "C-c C-e") 'my-python-next-statement)
-         (set_ret_newline_indent)
-         (setq indent-tabs-mode nil)
-         (setq tab-width 2)
-         (setq python-indent 2)))
+          '(lambda () 
+             (hs-minor-hode)
+             (local-set-key (kbd "C-c f") 'hs-toggle-hiding)
+             (local-set-key (kbd "C-c C-e") 'my-python-next-statement)
+             (set_ret_newline_indent)
+             (setq indent-tabs-mode nil)
+             (setq tab-width 2)
+             (setq python-indent 2)))
 
 (setq tab-width 4)

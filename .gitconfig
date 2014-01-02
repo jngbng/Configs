@@ -2,12 +2,25 @@
 	tool = vimdiff
 [difftool]
 	prompt = false
+[alias]
+	d = difftool
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	co = checkout
+	ci = commit
+	st = status
+	br = branch
 [user]
 	name = Jeongbong Seo
 	email = jngbng@gmail.com
 [push]
 	default = matching
+[core]
+  editor="vim"
 [merge]
 	tool = vimdiff
 [mergetool]
 	prompt = false
+[color]
+	diff = auto
+	branch = auto
+	status = auto
