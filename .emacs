@@ -772,12 +772,12 @@
 
 (add-hook 'python-mode-hook
           '(lambda () 
-             (hs-minor-hode)
+             (hs-minor-mode)
              (local-set-key (kbd "C-c f") 'hs-toggle-hiding)
              (local-set-key (kbd "C-c C-e") 'my-python-next-statement)
              (set_ret_newline_indent)
              (setq indent-tabs-mode nil)
-             (setq tab-width 2)
-             (setq python-indent 2)))
+             (setq tab-width 4)
+             (setq python-indent 4)))
 
 (setq tab-width 4)

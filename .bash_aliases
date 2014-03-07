@@ -35,6 +35,8 @@ alias amazon="ssh -i ~/.ssh/bongya.pem ubuntu@54.248.108.189"
 
 alias tizen='ssh pl@141.223.82.195 -o ForwardX11=yes'
 
+alias git-p4-push='git-p4 sync; git-p4 rebase; git-p4 commit'
+
 #util
 mycalc()
 {
