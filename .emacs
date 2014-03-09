@@ -242,7 +242,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ocp-indent
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-file "~/.opam/4.00.1/share/typerex/ocp-indent/ocp-indent.el")
+
+(let ((ocp-indent-file "~/.opam/4.00.1/share/typerex/ocp-indent/ocp-indent.el"))
+  (if (file-readable-p ocp-indent-file)
+    (load-file ocp-indent-file)
+    (with-temp-buffer
+      (insert (shell-command-to-string "ocp-edit-mode emacs -load-global-config"))
+      (eval-buffer))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Shell pop
@@ -624,7 +631,6 @@
 (setq-default buffer-coding-system 'utf-8) 
 (prefer-coding-system 'utf-8) 
 (set-default-coding-systems 'utf-8) 
-(with-temp-buffer (insert (shell-command-to-string "ocp-edit-mode emacs -load-global-config")) (eval-buffer))
 
 
 (require 'smart-compile)
