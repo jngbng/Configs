@@ -107,11 +107,11 @@
 ;; if indent-tabs-mode is off, untabify before saving 
 
 ;; but in emacs 24?!
-;(add-hook 'write-file-hooks 
-;  (lambda ()
-;    (if (not indent-tabs-mode) 
-;     (untabify (point-min) (point-max)
-;      nil)))) 
+(add-hook 'write-file-hooks
+ (lambda ()
+   (if (not indent-tabs-mode)
+    (untabify (point-min) (point-max)))
+   nil))
 
 
 
