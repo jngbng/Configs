@@ -244,7 +244,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (let ((ocp-indent-file "~/.opam/4.00.1/share/typerex/ocp-indent/ocp-indent.el"))
-  (if (file-readable-p ocp-indent-file)
+  (when (file-readable-p ocp-indent-file)
     (load-file ocp-indent-file)
     (with-temp-buffer
       (insert (shell-command-to-string "ocp-edit-mode emacs -load-global-config"))
