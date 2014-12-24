@@ -787,3 +787,38 @@
              (setq python-indent 4)))
 
 (setq tab-width 4)
+
+(eval-after-load "haskell-mode"
+  '(progn
+     (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+     ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+     (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+     ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+     (global-set-key (kbd "C-x a r") 'align-regexp)
+     ;; (add-to-list 'align-rules-list
+     ;;              '(haskell-types
+     ;;                (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+     ;;                (modes quote (haskell-mode literate-haskell-mode))))
+     ;; (add-to-list 'align-rules-list
+     ;;              '(haskell-assignment
+     ;;                (regexp . "\\(\\s-+\\)=\\s-+")
+     ;;                (modes quote (haskell-mode literate-haskell-mode))))
+     ;; (add-to-list 'align-rules-list
+     ;;              '(haskell-arrows
+     ;;                (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+     ;;                (modes quote (haskell-mode literate-haskell-mode))))
+     ;; (add-to-list 'align-rules-list
+     ;;              '(haskell-left-arrows
+     ;;                (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+     ;;                (modes quote (haskell-mode literate-haskell-mode))))
+     ))
+
+(eval-after-load "go-mode"
+  '(progn
+     (global-set-key (kbd "C-c d") 'godoc-at-point)
+     ))
+
+(eval-after-load "eshell"
+  '(progn
+     (setq eshell-path-env (concat "/usr/local/go/bin:/Users/bongya/go/bin:" eshell-path-env)
+     )))
