@@ -433,7 +433,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(confluence-default-space-alist (list (cons confluence-url "US")))
+ '(confluence-save-credentials t)
+ '(confluence-url "http://mobilerndhub.sec.samsung.net/wiki/rpc/xmlrpc")
+ '(confluence-xml-convert-to-wiki-on-load t)
  '(inhibit-startup-screen t)
+ '(js-indent-level 2)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(speedbar-show-unknown-files t)
@@ -492,46 +497,54 @@
     (add-to-list 'my-fonts '(korean-ksc5601 ("Naver Dictionary" . "unicode-bmp")))
   )
 
-(defun my/init-fonts (&optional f)
-  (when (display-graphic-p f)
-    ;; (create-fontset-from-fontset-spec standard-fontset-spec) ;to make --daemon work
-    (add-to-list 'default-frame-alist '(font . "fontset-standard"))
-    (dolist (font my-fonts)
-      (set-fontset-font "fontset-standard" (car font) (car (cdr font)) nil 'prepend))
-    (remove-hook 'after-make-frame-functions 'my/init-fonts)))
+;; (defun my/init-fonts (&optional f)
+;;   (when (display-graphic-p f)
+;;     (let ((fontset-name (create-fontset-from-fontset-spec standard-fontset-spec)))
+;;       (add-to-list 'default-frame-alist `(font . ,fontset-name))
+;;       (dolist (font my-fonts)
+;;         (set-fontset-font fontset-name (car font) (car (cdr font)) nil 'prepend))
+;;       (remove-hook 'after-make-frame-functions 'my/init-fonts))))
 
-(add-hook 'after-init-hook
- (lambda ()
-   (if initial-window-system
-     (my/init-fonts)
-     (add-hook 'after-make-frame-functions 'my/init-fonts))))
+;; ;; (defun my/init-fonts (&optional f)
+;; ;;   (when (display-graphic-p f)
+;; ;;     ;; (create-fontset-from-fontset-spec standard-fontset-spec) ;to make --daemon work
+;; ;;     (add-to-list 'default-frame-alist '(font . "fontset-standard"))
+;; ;;     (dolist (font my-fonts)
+;; ;;       (set-fontset-font "fontset-standard" (car font) (car (cdr font)) nil 'prepend))
+;; ;;     (remove-hook 'after-make-frame-functions 'my/init-fonts)))
 
-;; (if (eq system-type 'gnu/linux)
-;;  (progn
-;;   (set-fontset-font 
-;;     "fontset-default" 
-;;     'korean-ksc5601 
-;;     '("Naver Dictionary" . "unicode-bmp")
-;;    )
-;; ;;;; 유니코드 한글영역
-;; ;(set-fontset-font
-;; ;        "fontset-default"
-;; ;        '(#x1100 . #xffdc)
-;; ;        '("Naver Dictionary" . "unicode-bmp"))
-;; ;;;;유니코드 사용자 영역
-;; ;(set-fontset-font
-;; ;        "fontset-default"
-;; ;        '(#xe0bc . #xf66e)
-;; ;        '("Naver Dictionary" . "unicode-bmp"))
-;; ;(set-fontset-font
-;; ;        "fontset-default"
-;; ;        'kana
-;; ;        '("Dejavu Sans" . "unicode-bmp"))
-;; ;(set-fontset-font
-;; ;        "fontset-default"
-;; ;        'han
-;; ;        '("Dejavu Sans" . "unicode-bmp"))
-;; ))
+;; (add-hook 'after-init-hook
+;;  (lambda ()
+;;    (if initial-window-system
+;;      (my/init-fonts)
+;;      (add-hook 'after-make-frame-functions 'my/init-fonts))))
+
+(if (eq system-type 'gnu/linux)
+  (progn
+   (set-fontset-font 
+     "fontset-default" 
+     'korean-ksc5601 
+     '("Naver Dictionary" . "unicode-bmp")
+    )
+;;;; 유니코드 한글영역
+;(set-fontset-font
+;        "fontset-default"
+;        '(#x1100 . #xffdc)
+;        '("Naver Dictionary" . "unicode-bmp"))
+;;;;유니코드 사용자 영역
+;(set-fontset-font
+;        "fontset-default"
+;        '(#xe0bc . #xf66e)
+;        '("Naver Dictionary" . "unicode-bmp"))
+;(set-fontset-font
+;        "fontset-default"
+;        'kana
+;        '("Dejavu Sans" . "unicode-bmp"))
+;(set-fontset-font
+;        "fontset-default"
+;        'han
+;        '("Dejavu Sans" . "unicode-bmp"))
+))
 
 ;; (setq face-font-rescale-alist '((".*Naver.*" . 1.0)))
 
@@ -697,12 +710,7 @@
 
 ;; note, all customization must be in *one* custom-set-variables block
 
-(custom-set-variables
- '(confluence-url "http://slp-info.sec.samsung.net/confluence/rpc/xmlrpc")
- '(confluence-default-space-alist (list (cons confluence-url "BROWSER")))
- '(confluence-save-credentials t)
- '(confluence-xml-convert-to-wiki-on-load t)
- )
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -787,3 +795,76 @@
              (setq python-indent 4)))
 
 (setq tab-width 4)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; doku wiki editing support
+
+(require 'dokuwiki)
+(setq dokuwiki-username "jngbng"
+      dokuwiki-password "1234"
+      dokuwiki-base-url "10.253.63.188")
+
+
+;; use web-mode for .jsx files
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+
+;; http://www.flycheck.org/manual/latest/index.html
+(require 'flycheck)
+
+;; turn on flychecking globally
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
+
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
+;; https://github.com/purcell/exec-path-from-shell
+;; only need exec-path-from-shell on OSX
+;; this hopefully sets up path and other vars better
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+
+;; adjust indents for web-mode to 2 spaces
+(defun my-web-mode-hook ()
+  "Hooks for Web mode. Adjust indents"
+  ;;; http://web-mode.org/
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
+(add-hook 'web-mode-hook  'my-web-mode-hook)
+
+;; JS2-mode do not support ES6 fully
+(setq js2-highlight-external-variables nil)
+(setq js2-mode-show-parse-errors nil)
+
+
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+
+(add-hook 'js2-mode-hook
+ (lambda ()
+   (setq-default js2-basic-offset 2)
+   (setq js-indent-level 2)
+   (setq js2-indent-switch-body t)
+   (setq forward-sexp-function nil)
+   (hs-minor-mode)
+   (local-set-key (kbd "C-c f") 'hs-toggle-hiding)
+   ))
